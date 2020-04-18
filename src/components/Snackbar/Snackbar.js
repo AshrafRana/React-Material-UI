@@ -43,6 +43,7 @@ export default function Snackbar(props) {
             ? "center"
             : "right"
       }}
+      autoHideDuration={1000} 
       open={open}
       message={
         <div>

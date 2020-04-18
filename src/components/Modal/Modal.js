@@ -42,16 +42,11 @@ const Modal = props => {
         <DialogTitle
           id="classic-modal-slide-title"
           disableTypography
-          className={classes.modalHeader}
-        >
-          {/* <Button justIcon onClick={() => props.closeModal()}>
-            <Close className={classes.modalClose} />
-          </Button> */}
-          
+          className={classes.modalHeader} >
+
           <h4 className={classes.modalTitle}>{props.title}</h4>
         </DialogTitle>
-        
-        
+               
         <DialogContent
           id="modal-slide-description"
           className={classes.modalBody}

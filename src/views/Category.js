@@ -22,9 +22,9 @@ import Service from "services/service";
 
 const useStyles = makeStyles(styles);
 
-export default function Brand() {
+export default function Category() {
 
-  const url = '/brands'
+  const url = '/categories'
   const service  = new Service();
   const classes = useStyles();
   let initialRecord = {id:'',name: ''};
@@ -155,7 +155,7 @@ export default function Brand() {
       
     },
     {
-      label: "Brands",
+      label: "Order Types",
       name: "name",
       options: {
         filter: true,
@@ -224,14 +224,14 @@ return (
   <GridContainer>
       <GridItem  xs={4} sm={4} md={2}>
       <Button color="info"  onClick={() => handleCreateShow()}>
-        <span><Add className={classes.icon} /></span>Add Brand
+        <span><Add className={classes.icon} /></span>Vehicle Category
       </Button>
       </GridItem>
       <GridItem  xs={12} sm={12} md={12}>         
           {load?
             <div className={classes.root}><CircularProgress /> Loading ....</div>          
           : <MUIDataTable 
-            title={"Brand List"} 
+            title={"Vehicle Category List"} 
             data={recordList} 
             columns={columns} 
             options={options} 
@@ -241,7 +241,7 @@ return (
       <Modal 
           show={modal} 
           closeModal={handleCreateClose}
-          title = "Add Vehicle Brand"
+          title = "Add Vehicle Category"
           btnTitle = "Save"
           action = {addRecord}
           content = {
@@ -249,7 +249,7 @@ return (
                error = {errorText ?  true :false}
                helperText= {errorText ? "this filed required"  :null}
                 id="name"
-                label="Vehicle Brand"
+                label="Vehicle Category"
                 name = "name"
                 value = {record.name}
                 onChange = {handleInputChange}
@@ -261,7 +261,7 @@ return (
        <Modal 
           show={editModal} 
           closeModal={handleEditClose}
-          title = "Edit Vehicle Brand"
+          title = "Edit Vehicle Category"
           btnTitle = "Update"
           action = {editRecord}
           content = {
@@ -269,7 +269,7 @@ return (
             error = {errorText ?  true :false}
             helperText= {errorText ? "this filed required"  :null}
              id="name"
-             label="Vehicle Brand"
+             label="Vehilce Category"
              name = "name"
              value = {record.name}
              onChange = {handleInputChange}
@@ -284,7 +284,7 @@ return (
           title = "Are you sure you want to delete Vehicle Brand?"
           btnTitle = "Delete"
           action = {deleteRecord}
-          content ={<p> Vehicle Brand :  {record.name} </p>}
+          content ={<p> Vehicle Category :  {record.name} </p>}
        />
   </GridContainer>
   );

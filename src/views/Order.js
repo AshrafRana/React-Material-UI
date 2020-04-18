@@ -22,9 +22,9 @@ import Service from "services/service";
 
 const useStyles = makeStyles(styles);
 
-export default function Brand() {
+export default function Order() {
 
-  const url = '/brands'
+  const url = '/orders'
   const service  = new Service();
   const classes = useStyles();
   let initialRecord = {id:'',name: ''};
@@ -155,7 +155,7 @@ export default function Brand() {
       
     },
     {
-      label: "Brands",
+      label: "Order Types",
       name: "name",
       options: {
         filter: true,
@@ -224,14 +224,14 @@ return (
   <GridContainer>
       <GridItem  xs={4} sm={4} md={2}>
       <Button color="info"  onClick={() => handleCreateShow()}>
-        <span><Add className={classes.icon} /></span>Add Brand
+        <span><Add className={classes.icon} /></span>Order Type
       </Button>
       </GridItem>
       <GridItem  xs={12} sm={12} md={12}>         
           {load?
             <div className={classes.root}><CircularProgress /> Loading ....</div>          
           : <MUIDataTable 
-            title={"Brand List"} 
+            title={"Order Type List"} 
             data={recordList} 
             columns={columns} 
             options={options} 
@@ -241,7 +241,7 @@ return (
       <Modal 
           show={modal} 
           closeModal={handleCreateClose}
-          title = "Add Vehicle Brand"
+          title = "Add Order Type"
           btnTitle = "Save"
           action = {addRecord}
           content = {
@@ -249,7 +249,7 @@ return (
                error = {errorText ?  true :false}
                helperText= {errorText ? "this filed required"  :null}
                 id="name"
-                label="Vehicle Brand"
+                label="Order Type"
                 name = "name"
                 value = {record.name}
                 onChange = {handleInputChange}
@@ -261,7 +261,7 @@ return (
        <Modal 
           show={editModal} 
           closeModal={handleEditClose}
-          title = "Edit Vehicle Brand"
+          title = "Edit Order Type"
           btnTitle = "Update"
           action = {editRecord}
           content = {
@@ -269,7 +269,7 @@ return (
             error = {errorText ?  true :false}
             helperText= {errorText ? "this filed required"  :null}
              id="name"
-             label="Vehicle Brand"
+             label="Order Type"
              name = "name"
              value = {record.name}
              onChange = {handleInputChange}

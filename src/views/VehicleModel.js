@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from "react";
 // @material-ui/core components
+import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Add from "@material-ui/icons/Add";
 import Edit from "@material-ui/icons/Edit";
@@ -22,14 +23,19 @@ import Service from "services/service";
 
 const useStyles = makeStyles(styles);
 
-export default function Brand() {
+export default function Category() {
 
-  const url = '/brands'
+  const url = '/vehicle/models'
   const service  = new Service();
   const classes = useStyles();
-  let initialRecord = {id:'',name: ''};
+
+
+  let initialRecord = {id:'',category: '',brand:'',model:'',model_image:'',luggage:'',person_seat:'',year:''};
   const [record, setRecord] = useState(initialRecord);
   const [recordList, setRecordList] = useState([]);
+  const [brandList, setBrandList] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
+  
   const [load, setLoad] = useState(false);
   const [errorText ,setErrorText]= useState(false)
   const [modal, setModal] = useState(false);
@@ -63,6 +69,29 @@ export default function Brand() {
     const { name, value } = event.target
     setRecord({...record, [name]: value }) 
   }
+  
+  const getBrandList = () =>{
+   
+    service.getList('/brands')
+    .then(res => {
+      setBrandList(res.data);
+      console.log(res.data);
+    })
+    .catch(err => {
+      console.log(err.message);
+    })
+}
+const getCategoryList = () =>{
+   
+  service.getList('/categories')
+  .then(res => {
+    setCategoryList(res.data);
+    console.log(res.data);
+  })
+  .catch(err => {
+    console.log(err.message);
+  })
+}
   const getRecordList = () =>{
    
         setLoad(true);
@@ -79,11 +108,12 @@ export default function Brand() {
   }
 
   const addRecord = () =>{
-    if(record.name.trim() === ""){
+    if(record.model.trim() === ""){
       setErrorText(true)     
     }
     else{
         setModal(false);
+        console.log({record});
         service.postRecord(url,record)
         .then(res => {
           setRecord(initialRecord);
@@ -141,6 +171,8 @@ export default function Brand() {
 
   useEffect(() => {
     getRecordList();
+    getBrandList();
+    getCategoryList();
   },[]);
 
   // table colum names
@@ -154,9 +186,58 @@ export default function Brand() {
        }
       
     },
+    // {
+    //   label: "Image",
+    //   name: "image",
+    //   options: {
+    //     filter: true,
+    //     sort:true,
+    //   }
+    // },
     {
-      label: "Brands",
-      name: "name",
+      label: "Category",
+      name: "categories",
+      options: {
+        filter: true,
+        sort:true,
+      }
+    },
+    {
+      label: "Brand",
+      name: "brands",
+      options: {
+        filter: true,
+        sort:true,
+      }
+    },
+    {
+      label: "Model",
+      name: "model",
+      options: {
+        filter: true,
+        sort:true,
+      }
+    },
+    
+    {
+      label: "Luggage",
+      name: "luggage",
+      options: {
+        filter: true,
+        sort:true,
+      }
+    },
+    {
+      label: "Seats",
+      name: "person_seat",
+      options: {
+        filter: true,
+        sort:true,
+      }
+    },
+    {
+      label: "Model Year",
+      name: "year",
       options: {
         filter: true,
         sort:true,
@@ -220,18 +301,59 @@ const options = {
     onRowClick: onRowClick,
     selectableRows: false
 }
+
+
+// const currencies = [
+//   {
+//     value: 'USD',
+//     label: '$',
+//   },
+//   {
+//     value: 'EUR',
+//     label: '€',
+//   },
+//   {
+//     value: 'BTC',
+//     label: '฿',
+//   },
+//   {
+//     value: 'JPY',
+//     label: '¥',
+//   },
+// ];
+const [currency, setCurrency] = useState('EUR');
+
+const handleBrandChange = (event) => {
+
+  const {name , value} =event.target
+  // const {key} = event.currentTarget.dataset;
+  setRecord({...record, [name]: value }) 
+
+};
+const handleCategoryChange = (event) => {
+
+  const {name , value} =event.target
+  // const {key} = event.currentTarget.dataset;
+  setRecord({...record, [name]: value }) 
+
+};
+
+// const handleInputChange = event => {
+//   const { name, value } = event.target
+//   setRecord({...record, [name]: value }) 
+// }
 return (
   <GridContainer>
       <GridItem  xs={4} sm={4} md={2}>
       <Button color="info"  onClick={() => handleCreateShow()}>
-        <span><Add className={classes.icon} /></span>Add Brand
+        <span><Add className={classes.icon} /></span>Vehicle Model
       </Button>
       </GridItem>
       <GridItem  xs={12} sm={12} md={12}>         
           {load?
             <div className={classes.root}><CircularProgress /> Loading ....</div>          
           : <MUIDataTable 
-            title={"Brand List"} 
+            title={"Vehicle Category List"} 
             data={recordList} 
             columns={columns} 
             options={options} 
@@ -241,27 +363,119 @@ return (
       <Modal 
           show={modal} 
           closeModal={handleCreateClose}
-          title = "Add Vehicle Brand"
+          title = "Add Vehicle Model"
           btnTitle = "Save"
           action = {addRecord}
           content = {
+          <>
+            <GridItem  xs={12} sm={12} md={12}>            
             <TextField
+                id="brand"
+                name="brand"
+                select
+                value={record.brand}
+                onChange={handleBrandChange}
+                helperText="Please select your Brand"
+                fullWidth= {true}
+              >
+                {brandList.map((option) => (
+                  <MenuItem key={option.id} data-key={option.id} value={option.id}>
+                    {option.id}
+                  </MenuItem>
+                ))}
+              </TextField>
+              </GridItem>
+
+              <GridItem  xs={12} sm={12} md={12}>         
+            <TextField
+                id="category"
+                name="category"
+                select
+                value={record.category}
+                onChange={handleCategoryChange}
+                helperText="Please select your Category"
+                fullWidth= {true}
+              >
+                {categoryList.map((option) => (
+                  <MenuItem key={option.id} data-key={option.id} value={option.id}>
+                    {option.id}
+                  </MenuItem>
+                ))}
+              </TextField>
+              </GridItem>
+
+              <GridItem  xs={12} sm={12} md={12}>         
+              <TextField
                error = {errorText ?  true :false}
                helperText= {errorText ? "this filed required"  :null}
-                id="name"
-                label="Vehicle Brand"
-                name = "name"
-                value = {record.name}
+                id="model"
+                label="Vehicle Model"
+                name = "model"
+                value = {record.model}
                 onChange = {handleInputChange}
                 type="text"
+                fullWidth= {true}
               />
+              </GridItem>
+               <GridItem  xs={12} sm={12} md={12}>    
+              <TextField
+               error = {errorText ?  true :false}
+               helperText= {errorText ? "this filed required"  :null}
+                id="luggage"
+                label="Vehicle Luggage"
+                name = "luggage"
+                value = {record.luggage}
+                onChange = {handleInputChange}
+                type="number"
+                fullWidth= {true}
+              />
+              </GridItem>
+               <GridItem  xs={12} sm={12} md={12}>    
+              <TextField
+               error = {errorText ?  true :false}
+               helperText= {errorText ? "this filed required"  :null}
+                id="person_seat"
+                label="Person Seat"
+                name = "person_seat"
+                value = {record.person_seat}
+                onChange = {handleInputChange}
+                type="number"
+                fullWidth= {true}
+              />
+              </GridItem>
+               <GridItem  xs={12} sm={12} md={12}>    
+              <TextField
+               error = {errorText ?  true :false}
+               helperText= {errorText ? "this filed required"  :null}
+                id="year"
+                label="Model year"
+                name = "year"
+                value = {record.year}
+                onChange = {handleInputChange}
+                type="number"
+                fullWidth= {true}
+              />
+              </GridItem>
+              {/* <GridItem  xs={12} sm={12} md={12}>    
+              <TextField
+               error = {errorText ?  true :false}
+               helperText= {errorText ? "this filed required"  :null}
+                id="model_image"
+                name = "model_image"
+                value = {record.model_image}
+                onChange = {handleInputChange}
+                type="file"
+                fullWidth= {true}
+              />
+              </GridItem> */}
+              </>
           }
        />
        {/* Edit Brand Modal */}
        <Modal 
           show={editModal} 
           closeModal={handleEditClose}
-          title = "Edit Vehicle Brand"
+          title = "Edit Vehicle Category"
           btnTitle = "Update"
           action = {editRecord}
           content = {
@@ -269,7 +483,7 @@ return (
             error = {errorText ?  true :false}
             helperText= {errorText ? "this filed required"  :null}
              id="name"
-             label="Vehicle Brand"
+             label="Vehilce Category"
              name = "name"
              value = {record.name}
              onChange = {handleInputChange}
@@ -284,7 +498,7 @@ return (
           title = "Are you sure you want to delete Vehicle Brand?"
           btnTitle = "Delete"
           action = {deleteRecord}
-          content ={<p> Vehicle Brand :  {record.name} </p>}
+          content ={<p> Vehicle Category :  {record.name} </p>}
        />
   </GridContainer>
   );

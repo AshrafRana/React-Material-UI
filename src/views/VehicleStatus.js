@@ -22,12 +22,12 @@ import Service from "services/service";
 
 const useStyles = makeStyles(styles);
 
-export default function Brand() {
+export default function VehicleStatus() {
 
-  const url = '/brands'
+  const url = '/status'
   const service  = new Service();
   const classes = useStyles();
-  let initialRecord = {id:'',name: ''};
+  let initialRecord = {id:'',status: ''};
   const [record, setRecord] = useState(initialRecord);
   const [recordList, setRecordList] = useState([]);
   const [load, setLoad] = useState(false);
@@ -79,7 +79,7 @@ export default function Brand() {
   }
 
   const addRecord = () =>{
-    if(record.name.trim() === ""){
+    if(record.status.trim() === ""){
       setErrorText(true)     
     }
     else{
@@ -101,7 +101,7 @@ export default function Brand() {
 
   const editRecord = () =>{
 
-    if(record.name.trim() === "" && record.id !== 0){
+    if(record.status.trim() === "" && record.id !== 0){
       setErrorText(true)     
     }
     else{
@@ -155,8 +155,8 @@ export default function Brand() {
       
     },
     {
-      label: "Brands",
-      name: "name",
+      label: "Vehicle Status",
+      name: "status",
       options: {
         filter: true,
         sort:true,
@@ -211,9 +211,9 @@ export default function Brand() {
 // selected row data assign to textbox
 const onRowClick = (rowData) => {
 
-  let temp = {id:'',name: ''}
+  let temp = {id:'',status: ''}
   temp.id = rowData[0];
-  temp.name = rowData[1];
+  temp.status = rowData[1];
   setRecord(temp);
 }
 const options = {
@@ -224,14 +224,14 @@ return (
   <GridContainer>
       <GridItem  xs={4} sm={4} md={2}>
       <Button color="info"  onClick={() => handleCreateShow()}>
-        <span><Add className={classes.icon} /></span>Add Brand
+        <span><Add className={classes.icon} /></span>Vehicle Status
       </Button>
       </GridItem>
       <GridItem  xs={12} sm={12} md={12}>         
           {load?
             <div className={classes.root}><CircularProgress /> Loading ....</div>          
           : <MUIDataTable 
-            title={"Brand List"} 
+            title={"Vehicle Status List"} 
             data={recordList} 
             columns={columns} 
             options={options} 
@@ -241,17 +241,17 @@ return (
       <Modal 
           show={modal} 
           closeModal={handleCreateClose}
-          title = "Add Vehicle Brand"
+          title = "Add Vehicle Status"
           btnTitle = "Save"
           action = {addRecord}
           content = {
             <TextField
                error = {errorText ?  true :false}
                helperText= {errorText ? "this filed required"  :null}
-                id="name"
-                label="Vehicle Brand"
-                name = "name"
-                value = {record.name}
+                id="status"
+                label="Vehicle Status"
+                name = "status"
+                value = {record.status}
                 onChange = {handleInputChange}
                 type="text"
               />
@@ -261,17 +261,17 @@ return (
        <Modal 
           show={editModal} 
           closeModal={handleEditClose}
-          title = "Edit Vehicle Brand"
+          title = "Edit Vehicle Status"
           btnTitle = "Update"
           action = {editRecord}
           content = {
             <TextField
             error = {errorText ?  true :false}
             helperText= {errorText ? "this filed required"  :null}
-             id="name"
-             label="Vehicle Brand"
-             name = "name"
-             value = {record.name}
+             id="status"
+             label="Vehilce Status"
+             name = "status"
+             value = {record.status}
              onChange = {handleInputChange}
              type="text"
            />
@@ -284,7 +284,7 @@ return (
           title = "Are you sure you want to delete Vehicle Brand?"
           btnTitle = "Delete"
           action = {deleteRecord}
-          content ={<p> Vehicle Brand :  {record.name} </p>}
+          content ={<p> Vehicle Status :  {record.status} </p>}
        />
   </GridContainer>
   );
