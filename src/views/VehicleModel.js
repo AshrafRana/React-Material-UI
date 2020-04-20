@@ -15,11 +15,13 @@ import Modal from "components/Modal/Modal.js"
 // third party library
 import MUIDataTable from "mui-datatables";
 import ToastServive from 'react-material-toast';
+import FileBase64 from 'react-file-base64';
 // assets css
 import styles from "assets/jss/material-dashboard-react/components/tasksStyle.js";
 import AddAlert from "@material-ui/icons/AddAlert";
 // serviec api calling
 import Service from "services/service";
+import { findDOMNode } from "react-dom";
 
 const useStyles = makeStyles(styles);
 
@@ -29,6 +31,8 @@ export default function Category() {
   const service  = new Service();
   const classes = useStyles();
 
+
+  const years = Array.from(new Array(20),(val, index) => (new Date()).getFullYear() - index);
 
   let initialRecord = {id:'',category: '',brand:'',model:'',model_image:'',luggage:'',person_seat:'',year:''};
   const [record, setRecord] = useState(initialRecord);
@@ -65,9 +69,29 @@ export default function Category() {
   }
   const handleDeleteClose = () => setDeleteModal(false);
   
+
   const handleInputChange = event => {
     const { name, value } = event.target
     setRecord({...record, [name]: value }) 
+   
+  }
+
+  const handleImageChange = event => {
+    let a = event[0]['base64'].split(',')[1]
+    console.log(a);
+    console.log('*********');
+    // data:image/jpeg;base64,
+    console.log(event);
+    setRecord({...record, ['model_image']: a}) 
+
+    // let fd = new FormData();
+    // fd.append('image',event.target.files[0]);
+    // fd.append('name',event.target.files[0].name);
+    // // setRecord({...record, ['model_image']: formData }) 
+    // console.log(event.target.files[0]);
+    // console.log(fd);
+    // setRecordList(...record.model_image,fd);
+
   }
   
   const getBrandList = () =>{
@@ -75,7 +99,6 @@ export default function Category() {
     service.getList('/brands')
     .then(res => {
       setBrandList(res.data);
-      console.log(res.data);
     })
     .catch(err => {
       console.log(err.message);
@@ -86,7 +109,6 @@ const getCategoryList = () =>{
   service.getList('/categories')
   .then(res => {
     setCategoryList(res.data);
-    console.log(res.data);
   })
   .catch(err => {
     console.log(err.message);
@@ -112,8 +134,8 @@ const getCategoryList = () =>{
       setErrorText(true)     
     }
     else{
-        setModal(false);
-        console.log({record});
+        console.log(record);
+       setModal(false);
         service.postRecord(url,record)
         .then(res => {
           setRecord(initialRecord);
@@ -302,27 +324,6 @@ const options = {
     selectableRows: false
 }
 
-
-// const currencies = [
-//   {
-//     value: 'USD',
-//     label: '$',
-//   },
-//   {
-//     value: 'EUR',
-//     label: '€',
-//   },
-//   {
-//     value: 'BTC',
-//     label: '฿',
-//   },
-//   {
-//     value: 'JPY',
-//     label: '¥',
-//   },
-// ];
-const [currency, setCurrency] = useState('EUR');
-
 const handleBrandChange = (event) => {
 
   const {name , value} =event.target
@@ -364,23 +365,24 @@ return (
           show={modal} 
           closeModal={handleCreateClose}
           title = "Add Vehicle Model"
-          btnTitle = "Save"
+          btnTitle =  "Save"
           action = {addRecord}
           content = {
-          <>
-            <GridItem  xs={12} sm={12} md={12}>            
+          <>           
+          <GridItem  xs={12} sm={12} md={12}>            
             <TextField
                 id="brand"
                 name="brand"
+                label="Vehicle Brand"
                 select
                 value={record.brand}
                 onChange={handleBrandChange}
-                helperText="Please select your Brand"
+                helperText= {errorText ? "Please select your Brand"  :null}
                 fullWidth= {true}
               >
                 {brandList.map((option) => (
                   <MenuItem key={option.id} data-key={option.id} value={option.id}>
-                    {option.id}
+                    {option.name}
                   </MenuItem>
                 ))}
               </TextField>
@@ -390,18 +392,41 @@ return (
             <TextField
                 id="category"
                 name="category"
+                label="Vehicle Categroy"
                 select
                 value={record.category}
                 onChange={handleCategoryChange}
-                helperText="Please select your Category"
+                helperText= {errorText ? "Please select your Category"  :null}
                 fullWidth= {true}
               >
                 {categoryList.map((option) => (
                   <MenuItem key={option.id} data-key={option.id} value={option.id}>
-                    {option.id}
+                    {option.name}
                   </MenuItem>
                 ))}
               </TextField>
+              </GridItem>
+
+              <GridItem  xs={12} sm={12} md={12}>    
+              <TextField
+               error = {errorText ?  true :false}
+               helperText= {errorText ? "this filed required"  :null}
+                id="year"
+                label="Model year"
+                name = "year"
+                value = {record.year}
+                onChange = {handleInputChange}
+                fullWidth= {true}
+                select
+                >
+                {years.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+
+              </TextField>
+              
               </GridItem>
 
               <GridItem  xs={12} sm={12} md={12}>         
@@ -443,31 +468,14 @@ return (
                 fullWidth= {true}
               />
               </GridItem>
-               <GridItem  xs={12} sm={12} md={12}>    
-              <TextField
-               error = {errorText ?  true :false}
-               helperText= {errorText ? "this filed required"  :null}
-                id="year"
-                label="Model year"
-                name = "year"
-                value = {record.year}
-                onChange = {handleInputChange}
-                type="number"
-                fullWidth= {true}
-              />
+               
+              <GridItem  xs={12} sm={12} md={12}>    
+              
+              <FileBase64
+                  multiple={ true }
+                  onDone={ handleImageChange }
+                />
               </GridItem>
-              {/* <GridItem  xs={12} sm={12} md={12}>    
-              <TextField
-               error = {errorText ?  true :false}
-               helperText= {errorText ? "this filed required"  :null}
-                id="model_image"
-                name = "model_image"
-                value = {record.model_image}
-                onChange = {handleInputChange}
-                type="file"
-                fullWidth= {true}
-              />
-              </GridItem> */}
               </>
           }
        />
