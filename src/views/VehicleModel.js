@@ -31,7 +31,6 @@ export default function Category() {
   const service  = new Service();
   const classes = useStyles();
 
-
   const years = Array.from(new Array(20),(val, index) => (new Date()).getFullYear() - index);
 
   let initialRecord = {id:'',category: '',brand:'',model:'',model_image:'',luggage:'',person_seat:'',year:''};
@@ -77,21 +76,7 @@ export default function Category() {
   }
 
   const handleImageChange = event => {
-    let a = event[0]['base64'].split(',')[1]
-    console.log(a);
-    console.log('*********');
-    // data:image/jpeg;base64,
-    console.log(event);
-    setRecord({...record, ['model_image']: a}) 
-
-    // let fd = new FormData();
-    // fd.append('image',event.target.files[0]);
-    // fd.append('name',event.target.files[0].name);
-    // // setRecord({...record, ['model_image']: formData }) 
-    // console.log(event.target.files[0]);
-    // console.log(fd);
-    // setRecordList(...record.model_image,fd);
-
+    setRecord({...record, ['model_image']:event[0]['base64'].split(',')[1] }) 
   }
   
   const getBrandList = () =>{
@@ -151,24 +136,59 @@ const getCategoryList = () =>{
       }
   }
 
+  let errorFiled = {category: false,brand:false,model:false,model_image:false,luggage:false,person_seat:false,year:false};
+
   const editRecord = () =>{
 
-    if(record.name.trim() === "" && record.id !== 0){
-      setErrorText(true)     
-    }
+    if(record.category.trim() == ""){errorFiled['category'] = true;}
+    
+    else if(record.brand.trim() == "") {errorFiled['brand'] = true;}
+    
+    else if(record.model_image.trim() == ""){errorFiled['model_image'] = true;}
+
+    else if(record.luggage.trim() == ""){errorFiled['luggage'] = true; }
+
+    else if(record.person_seat.trim() == ""){errorFiled['person_seat'] = true;}
+
+    else if(record.year.trim() == ""){errorFiled['year'] = true;}
+    
+    else if(record.model.trim() == ""){errorFiled['model'] = true;}
+    
     else{
-        seteditModal(false);
-        service.putRecord(url+'/'+record.id,record)
-        .then(res => {
-          setRecordList(recordList.map(r => (r.id === record.id ? record : r)))
-          setRecord(initialRecord);
-          toast.success('Record Updated Successfully!');
-          setErrorText(false)
-        })
-        .catch(err => {
-          console.log('error');
-          console.log(err.message);
-        })
+      
+        let temp = {};
+        temp['id'] = record.id;
+
+        if(!isNaN(record.category)){temp['category'] = record.category;}
+        
+        if(!isNaN(record.brand) ){temp['brand'] = record.brand;}
+        
+        if(isNaN(record.model_image)){temp['model_image'] = record.model_image;}
+
+        if(!isNaN(record.luggage)){temp['luggage'] = record.luggage; }
+
+        if(!isNaN(record.person_seat)){temp['person_seat'] = record.person_seat;}
+
+        if(!isNaN(record.year)){temp['year'] = record.year;}
+        
+        if(isNaN(record.model)){temp['model'] = record.model;}
+        
+        console.log(temp);
+
+          seteditModal(false);
+          service.patchRecord(url+'/'+temp.id,temp)
+          .then(res => {
+            setRecordList(recordList.map(r => (r.id === temp.id ? res.data : r)))
+            setRecord(initialRecord);
+            toast.success('Record Updated Successfully!');
+            setErrorText(false)
+          })
+          .catch(err => {
+            console.log('error');
+            console.log(err.message);
+          })
+        
+      
       }
   }
 
@@ -311,12 +331,20 @@ const getCategoryList = () =>{
     },
     
   ];
+  // let initialRecord = {id:'',category: '',brand:'',model:'',model_image:'',luggage:'',person_seat:'',year:''};
+
 // selected row data assign to textbox
 const onRowClick = (rowData) => {
 
-  let temp = {id:'',name: ''}
+  let temp =  {id:'',category: '',brand:'',model:'',model_image:'',luggage:'',person_seat:'',year:''};
   temp.id = rowData[0];
-  temp.name = rowData[1];
+  temp.category = rowData[1];
+  temp.brand = rowData[2];
+  temp.model = rowData[3];
+  // temp.model_image = rowData[4];
+  temp.luggage = rowData[4];
+  temp.person_seat = rowData[5];
+  temp.year = rowData[6];
   setRecord(temp);
 }
 const options = {
@@ -381,7 +409,7 @@ return (
                 fullWidth= {true}
               >
                 {brandList.map((option) => (
-                  <MenuItem key={option.id} data-key={option.id} value={option.id}>
+                  <MenuItem key={option.id} value={option.id}>
                     {option.name}
                   </MenuItem>
                 ))}
@@ -400,7 +428,7 @@ return (
                 fullWidth= {true}
               >
                 {categoryList.map((option) => (
-                  <MenuItem key={option.id} data-key={option.id} value={option.id}>
+                  <MenuItem key={option.id}  value={option.id}>
                     {option.name}
                   </MenuItem>
                 ))}
@@ -486,27 +514,164 @@ return (
           title = "Edit Vehicle Category"
           btnTitle = "Update"
           action = {editRecord}
-          content = {
-            <TextField
-            error = {errorText ?  true :false}
-            helperText= {errorText ? "this filed required"  :null}
-             id="name"
-             label="Vehilce Category"
-             name = "name"
-             value = {record.name}
-             onChange = {handleInputChange}
-             type="text"
-           />
-          }
+          content =  {
+            <>           
+            <GridItem  xs={12} sm={12} md={12}>            
+              <TextField
+                  id="brand"
+                  name="brand"
+                  label="Vehicle Brand"
+                  select
+                  value={record.brand}
+                  onChange={handleBrandChange}
+                  helperText= {errorFiled['brand'] ? "Please select your Brand"  :null}
+                  fullWidth= {true}
+                >
+                      
+                  {brandList? 
+                      brandList.map((option) => (
+                        <MenuItem key={option.id}  value={option.id}>
+                          {option.name}
+                        </MenuItem>
+                      ))
+                  
+                  :null}
+
+                  {/* <MenuItem key={record.brand} value={record.brand}>
+                      {record.brand}
+                  </MenuItem> */}
+
+                  {/* if(isNaN(record.brand)){
+                        
+                    } */}
+                      
+                </TextField>
+                </GridItem>
+  
+                <GridItem  xs={12} sm={12} md={12}>         
+              <TextField
+                  id="category"
+                  name="category"
+                  label="Vehicle Categroy"
+                  select
+                  value={record.category}
+                  onChange={handleCategoryChange}
+                  helperText= {errorText ? "Please select your Category"  :null}
+                  fullWidth= {true}
+                >
+                  {categoryList? 
+                      categoryList.map((option) => (
+                        <MenuItem key={option.id}  value={option.id}>
+                          {option.name}
+                        </MenuItem>
+                      ))
+                  
+                  :null}
+                  
+                  if(isNaN(type(record.category)) ){
+                    
+                  <MenuItem  value={'-1'}>
+                      {record.category}
+                  </MenuItem>
+                
+                }
+                
+                </TextField>
+                </GridItem>
+  
+                <GridItem  xs={12} sm={12} md={12}>    
+                <TextField
+                 error = {errorText ?  true :false}
+                 helperText= {errorText ? "this filed required"  :null}
+                  id="year"
+                  label="Model year"
+                  name = "year"
+                  value = {record.year}
+                  onChange = {handleInputChange}
+                  fullWidth= {true}
+                  select
+                  >
+
+                  <MenuItem value={record.year}>
+                      {record.year}
+                  </MenuItem>
+                    
+                  {years? 
+                      years.map((option) => (
+                        <MenuItem key={option}  value={option}>
+                          {option}
+                        </MenuItem>
+                      ))
+                  
+                  :null}
+    
+  
+                </TextField>
+                
+                </GridItem>
+  
+                <GridItem  xs={12} sm={12} md={12}>         
+                <TextField
+                 error = {errorText ?  true :false}
+                 helperText= {errorText ? "this filed required"  :null}
+                  id="model"
+                  label="Vehicle Model"
+                  name = "model"
+                  value = {record.model}
+                  onChange = {handleInputChange}
+                  type="text"
+                  fullWidth= {true}
+                />
+                </GridItem>
+                 <GridItem  xs={12} sm={12} md={12}>    
+                <TextField
+                 helperText= {errorFiled['luggage'] ? "this filed required"  :null}
+                  id="luggage"
+                  label="Vehicle Luggage"
+                  name = "luggage"
+                  value = {record.luggage}
+                  onChange = {handleInputChange}
+                  type="number"
+                  fullWidth= {true}
+                />
+                </GridItem>
+                 <GridItem  xs={12} sm={12} md={12}>    
+                <TextField
+                 helperText= {errorFiled['person_seat'] ? "this filed required"  :null}
+                  id="person_seat"
+                  label="Person Seat"
+                  name = "person_seat"
+                  value = {record.person_seat}
+                  onChange = {handleInputChange}
+                  type="number"
+                  fullWidth= {true}
+                />
+                </GridItem>
+                 
+                <GridItem  xs={12} sm={12} md={12}>    
+                
+                <FileBase64
+                    multiple={ true }
+                    onDone={ handleImageChange }
+                  />
+                </GridItem>
+                </>
+            }
        />
         {/* Delete Brand Modal */}
         <Modal 
           show={deleteModal} 
           closeModal={handleDeleteClose}
-          title = "Are you sure you want to delete Vehicle Brand?"
+          title = "Are you sure you want to delete this Model?"
           btnTitle = "Delete"
           action = {deleteRecord}
-          content ={<p> Vehicle Category :  {record.name} </p>}
+          content ={
+          <p>
+            <strong> Vehicle Category : </strong> {record.category} <br/>
+            <strong>    Vehicle Brand : </strong> {record.brand} <br/>
+            <strong>  Vehicle Modal : </strong> {record.model} <br/>
+            <strong> Vehicle Year :  </strong>{record.year} <br/>              
+          </p>}
        />
   </GridContainer>
   );

@@ -15,6 +15,10 @@ putRecord(query,data) {
     return axios.put(configUrl+query,data)            
 }
 
+patchRecord(query,data) {
+    return axios.patch(configUrl+query,data)            
+}
+
 deleteRecord(query,data) {
     return axios.delete(configUrl+query,data)            
 }
