@@ -42,8 +42,9 @@ import Company from "views/Company.js";
 import Driver from "views/Driver.js";
 import Order from "views/Order.js";
 import Category from "views/Category.js";
-import VehicleStatus from "views/VehicleStatus";
-import VehicleModel from "views/VehicleModel";
+import VehicleStatus from "views/VehicleStatus.js";
+import VehicleModel from "views/VehicleModel.js";
+import VehiclePackage from "views/VehiclePackage.js";
 
 const dashboardRoutes = [
   
@@ -124,6 +125,13 @@ const dashboardRoutes = [
     name: "Vehicle Model",
     icon: "content_paste",
     component: VehicleModel,
+    layout: "/admin"
+  },
+  {
+    path: "/vehicle-package",
+    name: "Vehicle Package",
+    icon: "content_paste",
+    component: VehiclePackage,
     layout: "/admin"
   },
   // {

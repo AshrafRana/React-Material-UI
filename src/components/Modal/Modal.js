@@ -37,6 +37,7 @@ const Modal = props => {
         onClose={props.closeModal}
         aria-labelledby="modal-slide-title"
         aria-describedby="modal-slide-description"
+        disableBackdropClick 
       >
         
         <DialogTitle

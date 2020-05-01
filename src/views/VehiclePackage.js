@@ -25,19 +25,19 @@ import { findDOMNode } from "react-dom";
 
 const useStyles = makeStyles(styles);
 
-export default function VehicleModel() {
+export default function VehiclePackage() {
 
-  const url = '/vehicle/models'
+  const url = '/packages'
   const service  = new Service();
   const classes = useStyles();
 
   const years = Array.from(new Array(20),(val, index) => (new Date()).getFullYear() - index);
 
-  let initialRecord = {id:'',category: '',brand:'',model:'',model_image:'',luggage:'',person_seat:'',year:''};
+  let initialRecord = {id:'',order: '',model:'',km:'',hours:'',waiting_time:'',service:'',cancellation:'',fare_per_km:''};
   const [record, setRecord] = useState(initialRecord);
   const [recordList, setRecordList] = useState([]);
-  const [brandList, setBrandList] = useState([]);
-  const [categoryList, setCategoryList] = useState([]);
+  const [orderList, setOrderList] = useState([]);
+  const [modelList, setModelList] = useState([]);
   
   const [load, setLoad] = useState(false);
   const [modal, setModal] = useState(false);
@@ -87,7 +87,6 @@ export default function VehicleModel() {
   const [errorLuggage ,setErrorLuggage] = useState();
   const [errorLuggageText ,setErrorLuggageText] = useState();
   const [errorModel ,setErrorModel] = useState();
-  const [errorModelText ,setErrorModelText] = useState();
   const [errorPersonSeat ,setErrorPersonSeat] = useState();
   const [errorPersonSeatText ,setErrorPersonSeatText] = useState();
   const [errorImage ,setErrorImage] = useState();
@@ -96,36 +95,11 @@ export default function VehicleModel() {
 
   let check = false;
 
-   if(record.brand == ""){ check = true; setErrorBrand(true); }
+   if(record.brand.trim() == ""){ check = true; setErrorBrand(true); }
    
-   if(record.category == ""){ check = true; setErrorCategory(true); }
+   if(record.category.trim() == ""){ check = true; setErrorCategory(true); }
    
-   if(record.year == ""){ check = true; setErrorYear(true); }
-   
-   if(record.model.trim() == ""){ check = true; setErrorModelText("This filed is required");setErrorModel(true); }
-    
-   if(record.luggage == ""){check = true; setErrorLuggageText("This filed is required");setErrorLuggage(true);}
-
-   if(record.luggage <= 0 || record.luggage >= 10 ){check = true; setErrorLuggageText("value shoud be greater than 1 and less than 10"); setErrorLuggage(true);}
-
-   if(record.person_seat  == ""){ check = true; setErrorPersonSeat("This filed is required"); setErrorPersonSeat(true);}
-    
-   if(record.luggage <= 0 || record.luggage >= 10 ){ check = true; setErrorPersonSeatText("value shoud be greater than 1 and less than 10"); setErrorPersonSeat(true);}
- 
-   if(record.model_image.trim() == ""){ check = true; setErrorImage(true); alert('Model image is required'); }
- 
-   return check;
- }
-
- const editFiledValidate = ()=>{
-
-  let check = false;
-
-   if(record.brand == ""){ check = true; setErrorBrand(true); }
-   
-   if(record.category == ""){ check = true; setErrorCategory(true); }
-   
-   if(record.year == ""){ check = true; setErrorYear(true); }
+   if(isNaN(record.year) == ""){ check = true; setErrorYear(true); }
    
    if(record.model.trim() == ""){ check = true; setErrorModel(true); }
     
@@ -135,7 +109,32 @@ export default function VehicleModel() {
 
    if(record.person_seat  == ""){ check = true; setErrorPersonSeat("This filed is required"); setErrorPersonSeat(true);}
     
-   if(record.luggaperson_seatge <= 0 || record.person_seat >= 10 ){ check = true; setErrorPersonSeatText("value shoud be greater than 1 and less than 10"); setErrorPersonSeat(true);}
+   if(record.luggage <= 0 || record.luggage >= 10 ){ check = true; setErrorPersonSeatText("value shoud be greater than 1 and less than 10"); setErrorPersonSeat(true);}
+ 
+   if(record.model_image.trim() == ""){ check = true; setErrorImage(true); }
+ 
+   return check;
+ }
+
+ const editFiledValidate = ()=>{
+
+  let check = false;
+
+   if(record.brand.trim() == ""){ check = true; setErrorBrand(true); }
+   
+   if(record.category.trim() == ""){ check = true; setErrorCategory(true); }
+   
+   if(isNaN(record.year) == ""){ check = true; setErrorYear(true); }
+   
+   if(record.model.trim() == ""){ check = true; setErrorModel(true); }
+    
+   if(record.luggage == ""){check = true; setErrorLuggageText("This filed is required");setErrorLuggage(true);}
+
+   if(record.luggage <= 0 || record.luggage >= 10 ){check = true; setErrorLuggageText("value shoud be greater than 1 and less than 10"); setErrorLuggage(true);}
+
+   if(record.person_seat  == ""){ check = true; setErrorPersonSeat("This filed is required"); setErrorPersonSeat(true);}
+    
+   if(record.luggage <= 0 || record.luggage >= 10 ){ check = true; setErrorPersonSeatText("value shoud be greater than 1 and less than 10"); setErrorPersonSeat(true);}
  
    return check;
  }
@@ -150,27 +149,29 @@ export default function VehicleModel() {
 
   }
 
-  const getBrandList = () =>{
+const getOrderList = () =>{
    
-    service.getList('/brands')
+    service.getList('/orders')
     .then(res => {
-      setBrandList(res.data);
+      setOrderList(res.data);
+      console.log(res.data);
     })
     .catch(err => {
       console.log(err.message);
     })
 }
-const getCategoryList = () =>{
+const getModelList = () =>{
    
-  service.getList('/categories')
+  service.getList('/vehicle/models')
   .then(res => {
-    setCategoryList(res.data);
+    setModelList(res.data);
+    console.log(res.data);
   })
   .catch(err => {
     console.log(err.message);
   })
 }
-  const getRecordList = () =>{
+const getRecordList = () =>{
    
         setLoad(true);
         service.getList(url)
@@ -180,39 +181,33 @@ const getCategoryList = () =>{
           setLoad(false);
         })
         .catch(err => {
-          console.log('error');
+          console.log('error j');
           console.log(err.message);
           setLoad(true);
         })
   }
 
-  const addRecord = () =>{
+const addRecord = () =>{
     
-    if(addFiledValidate() == false ){
-
-
-      service.postRecord(url,record)
+    if(addFiledValidate() == false){
+      
+       validateSetFalse();
+        setModal(false);
+        service.postRecord(url,record)
         .then(res => {
-            setModal(false);
-            validateSetFalse();
-            setRecord(initialRecord);
-            setRecordList([...recordList,res.data])
-            toast.success('New Record Added Successfully!');
-
+          setRecord(initialRecord);
+          setRecordList([...recordList,res.data])
+          toast.success('New Record Added Successfully!');
         })
-        .catch(error => {
-          console.log(error.response.data.message.model[0]);
-          setErrorModelText(error.response.data.message.model[0]);
-          setErrorModel(true);
-        
-      });
+        .catch(err => {
+          console.log('error');
+          console.log(err.message);
+        })
 
-    }
+      }
   }
 
- 
-
-  const editRecord = () =>{
+const editRecord = () =>{
     
     if(editFiledValidate() == false){
       
@@ -244,14 +239,14 @@ const getCategoryList = () =>{
           })
           .catch(err => {
             console.log('error');
-            console.log(err.response);
+            console.log(err.message);
           })
         
       }
       
   }
 
-  const deleteRecord = () =>{
+const deleteRecord = () =>{
 
     if(record.id !== 0){   
       setDeleteModal(false);
@@ -272,8 +267,8 @@ const getCategoryList = () =>{
 
   useEffect(() => {
     getRecordList();
-    getBrandList();
-    getCategoryList();
+    getOrderList();
+    getModelList();
   },[]);
 
   // table colum names
@@ -287,33 +282,25 @@ const getCategoryList = () =>{
        }
       
     },
-    // {
-    //   label: "Image",
-    //   name: "image",
-    //   options: {
-    //     filter: true,
-    //     sort:true,
-    //   }
-    // },
     {
-      label: "Category",
-      name: "categories",
+      label: "Order Type",
+      name: "order_name",
       options: {
         filter: true,
         sort:true,
       }
     },
     {
-      label: "Brand",
-      name: "brands",
+      label: "Vehicle Model",
+      name: "model_name",
       options: {
         filter: true,
         sort:true,
       }
-    },
+    },   
     {
-      label: "Model",
-      name: "model",
+      label: "Kilo-meter",
+      name: "km",
       options: {
         filter: true,
         sort:true,
@@ -321,29 +308,46 @@ const getCategoryList = () =>{
     },
     
     {
-      label: "Luggage",
-      name: "luggage",
+      label: "Hours",
+      name: "hours",
       options: {
         filter: true,
         sort:true,
       }
     },
     {
-      label: "Seats",
-      name: "person_seat",
+      label: "Waiting Time",
+      name: "waiting_time",
       options: {
         filter: true,
         sort:true,
       }
     },
     {
-      label: "Model Year",
-      name: "year",
+      label: "service",
+      name: "service",
       options: {
         filter: true,
         sort:true,
       }
     },
+    {
+      label: "cancellation",
+      name: "cancellation",
+      options: {
+        filter: true,
+        sort:true,
+      }
+    },
+    {
+      label: "fare per kilometer",
+      name: "fare_per_km",
+      options: {
+        filter: true,
+        sort:true,
+      }
+    },
+ 
     {
       name: "Edit",
       options: {
@@ -425,45 +429,45 @@ const handleCategoryChange = (event) => {
 
 return (
   <GridContainer>
-      <GridItem  xs={4} sm={4} md={2}>
+      <GridItem  xs={12} sm={12} md={12}>
       <Button color="info"  onClick={() => handleCreateShow()}>
-        <span><Add className={classes.icon} /></span>Vehicle Model
+        <span><Add className={classes.icon} /></span>Vehicle Pacckage
       </Button>
       </GridItem>
       <GridItem  xs={12} sm={12} md={12}>         
           {load?
             <div className={classes.root}><CircularProgress /> Loading ....</div>          
           : <MUIDataTable 
-            title={"Vehicle Category List"} 
+            title={"Vehicle Package List"} 
             data={recordList} 
             columns={columns} 
             options={options} 
           />}
       </GridItem>
-      {/* Create Brand Modal */}
+      {/* Create Modal */}
       <Modal 
           show={modal} 
           closeModal={handleCreateClose}
-          title = "Add Vehicle Model"
+          title = "Add Vehicle Package"
           btnTitle =  "Save"
           action = {addRecord}
           content =  {
             <>           
-            <GridItem  xs={12} sm={12} md={12}>            
+                <GridItem  xs={12} sm={12} md={12}>           
               <TextField
                   error = {errorBrand}
                   helperText = {errorBrand ? "please select vehicle brand ":null}
-                  id="brand"
-                  name="brand"
-                  label="Vehicle Brand"
+                  id="order"
+                  name="order"
+                  label="Order Type"
                   select
-                  value={record.brand}
+                  value={record.order}
                   onChange={handleBrandChange}
                   fullWidth= {true}
                 >
                       
-                  {brandList? 
-                      brandList.map(option => (
+                  {orderList? 
+                      orderList.map(option => (
                         <MenuItem key={option.id}  value={option.id}>
                           {option.name}
                         </MenuItem>
@@ -474,22 +478,22 @@ return (
                 </TextField>
                 </GridItem>
   
-                <GridItem  xs={12} sm={12} md={12}>         
+                <GridItem  xs={12} sm={12} md={12}> 
               <TextField
                   error ={errorCategory}
                   helperText = {errorCategory?"This filed is required":null}
-                  id="category"
-                  name="category"
-                  label="Vehicle Categroy"
+                  id="model"
+                  name="model"
+                  label="Vehicle Model"
                   select
-                  value={record.category}
+                  value={record.model}
                   onChange={handleCategoryChange}
                   fullWidth= {true}
                 >
-                  {categoryList? 
-                      categoryList.map((option) => (
+                  {modelList? 
+                      modelList.map((option) => (
                         <MenuItem key={option.id}  value={option.id}>
-                          {option.name}
+                          {option.model}
                         </MenuItem>
                       ))
                   
@@ -498,54 +502,28 @@ return (
                 </TextField>
                 </GridItem>
   
-                <GridItem  xs={12} sm={12} md={12}>    
-                <TextField
-                  error ={errorYear}
-                  helperText = {errorYear?"This filed is required":null}
-                  id="year"
-                  label="Model year"
-                  name = "year"
-                  value = {record.year}
-                  onChange = {handleInputChange}
-                  fullWidth= {true}
-                  select
-                  >
-
-                  {years? 
-                      years.map((option) => (
-                        <MenuItem key={option}  value={option}>
-                          {option}
-                        </MenuItem>
-                      ))
-                  
-                  :null}
-    
   
-                </TextField>
-                
-                </GridItem>
-  
-                <GridItem  xs={12} sm={12} md={12}>         
+                <GridItem  xs={12} sm={12} md={2}>         
                 <TextField
                  error = {errorModel}
-                 helperText= {errorModel ? errorModelText  :null}
-                  id="model"
-                  label="Vehicle Model"
-                  name = "model"
-                  value = {record.model}
+                 helperText= {errorModel ? "this filed required"  :null}
+                  id="km"
+                  label="Kilometer"
+                  name = "km"
+                  value = {record.km}
                   onChange = {handleInputChange}
-                  type="text"
+                  type="number"
                   fullWidth= {true}
                 />
                 </GridItem>
-                 <GridItem  xs={12} sm={12} md={12}>    
+                <GridItem  xs={12} sm={12} md={12}>  
                 <TextField
                  error = {errorLuggage}
                  helperText= {errorLuggage? errorLuggageText  :null}
-                 id="luggage"
-                  label="Vehicle Luggage"
-                  name = "luggage"
-                  value = {record.luggage}
+                 id="hours"
+                  label="Driving hours"
+                  name = "hours"
+                  value = {record.hours}
                   onChange = {handleInputChange}
                   type="number"
                   fullWidth= {true}
@@ -556,45 +534,73 @@ return (
                 }}
                 />
                 </GridItem>
-                 <GridItem  xs={12} sm={12} md={12}>    
+                <GridItem  xs={12} sm={12} md={12}>  
                 <TextField
                  error = {errorPersonSeat}
                  helperText= {errorPersonSeat? errorPersonSeatText  :null}
-                  id="person_seat"
-                  label="Person Seat"
-                  name = "person_seat"
-                  value = {record.person_seat}
+                  id="waiting_time"
+                  label="Wating Time"
+                  name = "waiting_time"
+                  value = {record.waiting_time}
+                  onChange = {handleInputChange}
+                  type="text"
+                  fullWidth= {true}
+                 
+                />
+                </GridItem>
+
+            <GridItem  xs={12} sm={12} md={12}>  
+                <TextField
+                 error = {errorPersonSeat}
+                 helperText= {errorPersonSeat? errorPersonSeatText  :null}
+                  id="service"
+                  label="Services"
+                  name = "service"
+                  value = {record.service}
+                  onChange = {handleInputChange}
+                  type="text"
+                  fullWidth= {true}
+                 
+                />
+                </GridItem>
+
+                <GridItem  xs={12} sm={12} md={12}>    
+                <TextField
+                 error = {errorPersonSeat}
+                 helperText= {errorPersonSeat? errorPersonSeatText  :null}
+                  id="cancellation"
+                  label="Booking Cancellation"
+                  name = "cancellation"
+                  value = {record.cancellation}
+                  onChange = {handleInputChange}
+                  type="text"
+                  fullWidth= {true}
+                 
+                />
+                </GridItem>
+                <GridItem  xs={12} sm={12} md={12}>    
+                <TextField
+                 error = {errorPersonSeat}
+                 helperText= {errorPersonSeat? errorPersonSeatText  :null}
+                  id="fare_pr_km"
+                  label="Fare Per Kilometer"
+                  name = "fare_per_kilometer"
+                  value = {record.fare_per_km}
                   onChange = {handleInputChange}
                   type="number"
                   fullWidth= {true}
-                  InputProps={{
-                    inputProps: { 
-                        max: 10, min: 1 
-                    }
-                }}
+                 
                 />
                 </GridItem>
-                 
-                <GridItem  xs={12} sm={12} md={12}>    
-                
-                <FileBase64
-                   
-                   required= {true}
-                   error ={true}
-                   helperText = {errorImage ? "Model image is required":null}
-                    multiple={ true }
-                    onDone={ handleImageChange }
-                  />
-                </GridItem>
-                </>
+              </>
             }
           
        />
-       {/* Edit Brand Modal */}
+       {/* Edit Modal */}
        <Modal 
           show={editModal} 
           closeModal={handleEditClose}
-          title = "Edit Vehicle Modal"
+          title = "Edit Vehicle Category"
           btnTitle = "Update"
           action = {editRecord}
           content =  {
@@ -610,8 +616,8 @@ return (
                   fullWidth= {true}
                 >
                       
-                  {brandList? 
-                      brandList.map(option => (
+                  {orderList? 
+                      orderList.map(option => (
                         <MenuItem key={option.id}  value={option.id}>
                           {option.name}
                         </MenuItem>
@@ -619,7 +625,7 @@ return (
                   
                   :null}
 
-                  {brandList.map(r => (r.name === record.brand  ? 
+                  {orderList.map(r => (r.name === record.brand  ? 
                   <MenuItem key={r.id} value= {r.name}>
                       {r.name}
                   </MenuItem>
@@ -638,8 +644,8 @@ return (
                   onChange={handleCategoryChange}
                   fullWidth= {true}
                 >
-                  {categoryList? 
-                      categoryList.map((option) => (
+                  {modelList? 
+                      modelList.map((option) => (
                         <MenuItem key={option.id}  value={option.id}>
                           {option.name}
                         </MenuItem>
@@ -647,7 +653,7 @@ return (
                   
                   :null}
                   
-                  {categoryList.map(r => (r.name === record.category  ? 
+                  {modelList.map(r => (r.name === record.category  ? 
                   <MenuItem key={r.id}  value= {r.name}>
                       {r.name}
                   </MenuItem>
@@ -745,7 +751,7 @@ return (
                 </>
             }
        />
-        {/* Delete Brand Modal */}
+        {/* Delete Modal */}
         <Modal 
           show={deleteModal} 
           closeModal={handleDeleteClose}
