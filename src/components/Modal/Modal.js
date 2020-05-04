@@ -38,14 +38,17 @@ const Modal = props => {
         aria-labelledby="modal-slide-title"
         aria-describedby="modal-slide-description"
         disableBackdropClick 
+        maxWidth='xs'
+        autoDetectWindowHeight={false} 
+        autoScrollBodyContent={false}
+        fullWidth={true}
       >
         
         <DialogTitle
           id="classic-modal-slide-title"
           disableTypography
           className={classes.modalHeader} >
-
-          <h4 className={classes.modalTitle}>{props.title}</h4>
+          <h3 className={classes.modalTitle}>{props.title}</h3>
         </DialogTitle>
                
         <DialogContent

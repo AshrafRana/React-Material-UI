@@ -16,7 +16,6 @@ import MUIDataTable from "mui-datatables";
 import ToastServive from 'react-material-toast';
 // assets css
 import styles from "assets/jss/material-dashboard-react/components/tasksStyle.js";
-import AddAlert from "@material-ui/icons/AddAlert";
 // serviec api calling
 import Service from "services/service";
 
@@ -254,6 +253,7 @@ return (
                 value = {record.status}
                 onChange = {handleInputChange}
                 type="text"
+                fullWidth={true}
               />
           }
        />
@@ -274,6 +274,7 @@ return (
              value = {record.status}
              onChange = {handleInputChange}
              type="text"
+             fullWidth={true}
            />
           }
        />

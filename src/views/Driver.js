@@ -24,7 +24,7 @@ import People from '@material-ui/icons/People';
 import styles from "assets/jss/material-dashboard-react/components/tasksStyle.js";
 import { makeStyles } from "@material-ui/core/styles";
 
-import getAll from "services/service";
+// import getAll from "services/service";
 
 const useStyles = makeStyles(styles);
 
@@ -164,133 +164,134 @@ export default function Driver() {
   ];
 
   return (
-  <GridContainer>
-      <GridItem  xs={4} sm={4} md={2}>
-      <Button color="info"  onClick={() => handleCreateShow()}>
-        <span><Add className={classes.icon} /></span>Add Brand
-      </Button>
-      </GridItem>
-      <GridItem  xs={12} sm={12} md={12}>
-          <MUIDataTable 
-            title={"Driver List"} 
-            data={recordList} 
-            columns={columns} 
-            // options={options} 
-          />
-      </GridItem>
-      {/* Create Brand Modal */}
-      <Modal 
-          show={modal} 
-          closeModal={handleCreateClose}
-          title = "Register New Driver"
-          btnTitle = "Save"
-          action = {addRecord}
-          content = {
-                        <>
-                          <GridContainer>
-                            <GridItem xs={12} sm={12} md={6}>
-                              <CustomInput
-                                labelText="First Name"
-                                id="first-name"
-                                formControlProps={{
-                                  fullWidth: true
-                                }}
-                              />
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="firstname"
-                  label="First Name"
-                  type="file"
-                  fullWidth
-                />
-                            </GridItem>
-                            <GridItem xs={12} sm={12} md={6}>
-                              <CustomInput
-                                labelText="Last Name"
-                                id="last-name"
-                                formControlProps={{
-                                  fullWidth: true,
-                                  endAdornment: (<InputAdornment position="start"><People/></InputAdornment>)
-                                }}
-                              />
-                            </GridItem>
-                          </GridContainer>
-                          <GridContainer>
-                            <GridItem xs={12} sm={12} md={6}>
-                              <CustomInput
-                                labelText="Email address"
-                                id="email-address"
-                                formControlProps={{
-                                  fullWidth: true
-                                }}
-                              />
-                            </GridItem>
-                            <GridItem xs={12} sm={12} md={6}>
-                              <CustomInput
-                                labelText="Phone Number"
-                                id="phone-number"
-                                formControlProps={{
-                                  fullWidth: true
-                                }}
-                              />
-                            </GridItem>
-                          </GridContainer>
-                          <GridContainer>
-                            <GridItem xs={12} sm={12} md={6}>
-                              <CustomInput
-                                labelText="Drive Image"
-                                id="driver-image"
-                                formControlProps={{
-                                  fullWidth: true
+    <>hello</>
+  // <GridContainer>
+  //     <GridItem  xs={4} sm={4} md={2}>
+  //     <Button color="info"  onClick={() => handleCreateShow()}>
+  //       <span><Add className={classes.icon} /></span>Add Brand
+  //     </Button>
+  //     </GridItem>
+  //     <GridItem  xs={12} sm={12} md={12}>
+  //         <MUIDataTable 
+  //           title={"Driver List"} 
+  //           data={recordList} 
+  //           columns={columns} 
+  //           // options={options} 
+  //         />
+  //     </GridItem>
+  //     {/* Create Brand Modal */}
+  //     <Modal 
+  //         show={modal} 
+  //         closeModal={handleCreateClose}
+  //         title = "Register New Driver"
+  //         btnTitle = "Save"
+  //         action = {addRecord}
+  //         content = {
+  //                       <>
+  //                         <GridContainer>
+  //                           <GridItem xs={12} sm={12} md={6}>
+  //                             <CustomInput
+  //                               labelText="First Name"
+  //                               id="first-name"
+  //                               formControlProps={{
+  //                                 fullWidth: true
+  //                               }}
+  //                             />
+  //               <TextField
+  //                 autoFocus
+  //                 margin="dense"
+  //                 id="firstname"
+  //                 label="First Name"
+  //                 type="file"
+  //                 fullWidth
+  //               />
+  //                           </GridItem>
+  //                           <GridItem xs={12} sm={12} md={6}>
+  //                             <CustomInput
+  //                               labelText="Last Name"
+  //                               id="last-name"
+  //                               formControlProps={{
+  //                                 fullWidth: true,
+  //                                 endAdornment: (<InputAdornment position="start"><People/></InputAdornment>)
+  //                               }}
+  //                             />
+  //                           </GridItem>
+  //                         </GridContainer>
+  //                         <GridContainer>
+  //                           <GridItem xs={12} sm={12} md={6}>
+  //                             <CustomInput
+  //                               labelText="Email address"
+  //                               id="email-address"
+  //                               formControlProps={{
+  //                                 fullWidth: true
+  //                               }}
+  //                             />
+  //                           </GridItem>
+  //                           <GridItem xs={12} sm={12} md={6}>
+  //                             <CustomInput
+  //                               labelText="Phone Number"
+  //                               id="phone-number"
+  //                               formControlProps={{
+  //                                 fullWidth: true
+  //                               }}
+  //                             />
+  //                           </GridItem>
+  //                         </GridContainer>
+  //                         <GridContainer>
+  //                           <GridItem xs={12} sm={12} md={6}>
+  //                             <CustomInput
+  //                               labelText="Drive Image"
+  //                               id="driver-image"
+  //                               formControlProps={{
+  //                                 fullWidth: true
                                   
-                                }}
-                              />
-                            </GridItem>
-                            <GridItem xs={12} sm={12} md={6}>
-                              <CustomInput
-                                labelText="Address"
-                                id="Address"
-                                formControlProps={{
-                                  fullWidth: true
-                                }}
-                              />
-                            </GridItem>
-                          </GridContainer>
-                          </>
-          }
-       />
-       {/* Edit Brand Modal */}
-       <Modal 
-          show={editModal} 
-          closeModal={handleEditClose}
-          title = "Edit Vehicle Brand"
-          btnTitle = "Update"
-          action = {editRecord}
-          content = {
-                <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Vehicle Brand"
-                type="name"
-                fullWidth
-              />
+  //                               }}
+  //                             />
+  //                           </GridItem>
+  //                           <GridItem xs={12} sm={12} md={6}>
+  //                             <CustomInput
+  //                               labelText="Address"
+  //                               id="Address"
+  //                               formControlProps={{
+  //                                 fullWidth: true
+  //                               }}
+  //                             />
+  //                           </GridItem>
+  //                         </GridContainer>
+  //                         </>
+  //         }
+  //      />
+  //      {/* Edit Brand Modal */}
+  //      <Modal 
+  //         show={editModal} 
+  //         closeModal={handleEditClose}
+  //         title = "Edit Vehicle Brand"
+  //         btnTitle = "Update"
+  //         action = {editRecord}
+  //         content = {
+  //               <TextField
+  //               autoFocus
+  //               margin="dense"
+  //               id="name"
+  //               label="Vehicle Brand"
+  //               type="name"
+  //               fullWidth
+  //             />
           
-          }
-       />
-        {/* Delete Brand Modal */}
-        <Modal 
-          show={deleteModal} 
-          closeModal={handleDeleteClose}
-          title = "Delte Vehicle Brand"
-          btnTitle = "Delete"
-          action = {deleteRecord}
-          content = {
-         <p>Delete Record!</p> 
-          }
-       />
-  </GridContainer>
+  //         }
+  //      />
+  //       {/* Delete Brand Modal */}
+  //       <Modal 
+  //         show={deleteModal} 
+  //         closeModal={handleDeleteClose}
+  //         title = "Delte Vehicle Brand"
+  //         btnTitle = "Delete"
+  //         action = {deleteRecord}
+  //         content = {
+  //        <p>Delete Record!</p> 
+  //         }
+  //      />
+  // </GridContainer>
   
   );
 }

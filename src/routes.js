@@ -44,7 +44,7 @@ import Order from "views/Order.js";
 import Category from "views/Category.js";
 import VehicleStatus from "views/VehicleStatus.js";
 import VehicleModel from "views/VehicleModel.js";
-import VehiclePackage from "views/VehiclePackage.js";
+import VehicleFare from "views/VehicleFare.js";
 
 const dashboardRoutes = [
   
@@ -128,10 +128,10 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "/vehicle-package",
-    name: "Vehicle Package",
+    path: "/vehicle-fare",
+    name: "Vehicle Fare",
     icon: "content_paste",
-    component: VehiclePackage,
+    component: VehicleFare,
     layout: "/admin"
   },
   // {

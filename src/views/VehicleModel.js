@@ -18,11 +18,8 @@ import ToastServive from 'react-material-toast';
 import FileBase64 from 'react-file-base64';
 // assets css
 import styles from "assets/jss/material-dashboard-react/components/tasksStyle.js";
-import AddAlert from "@material-ui/icons/AddAlert";
 // serviec api calling
 import Service from "services/service";
-import { findDOMNode } from "react-dom";
-
 const useStyles = makeStyles(styles);
 
 export default function VehicleModel() {
@@ -78,7 +75,8 @@ export default function VehicleModel() {
   }
 
   const handleImageChange = event => {
-    setRecord({...record, ['model_image']:event[0]['base64'].split(',')[1] }) 
+    let name = "model_image"
+    setRecord({...record, [name]:event[0]['base64'].split(',')[1] });
   }
  
   const [errorBrand , setErrorBrand ] = useState();
@@ -96,23 +94,23 @@ export default function VehicleModel() {
 
   let check = false;
 
-   if(record.brand == ""){ check = true; setErrorBrand(true); }
+   if(record.brand === ""){ check = true; setErrorBrand(true); }
    
-   if(record.category == ""){ check = true; setErrorCategory(true); }
+   if(record.category === ""){ check = true; setErrorCategory(true); }
    
-   if(record.year == ""){ check = true; setErrorYear(true); }
+   if(record.year === ""){ check = true; setErrorYear(true); }
    
-   if(record.model.trim() == ""){ check = true; setErrorModelText("This filed is required");setErrorModel(true); }
+   if(record.model.trim() === ""){ check = true; setErrorModelText("This filed is required");setErrorModel(true); }
     
-   if(record.luggage == ""){check = true; setErrorLuggageText("This filed is required");setErrorLuggage(true);}
+   if(record.luggage === ""){check = true; setErrorLuggageText("This filed is required");setErrorLuggage(true);}
 
    if(record.luggage <= 0 || record.luggage >= 10 ){check = true; setErrorLuggageText("value shoud be greater than 1 and less than 10"); setErrorLuggage(true);}
 
-   if(record.person_seat  == ""){ check = true; setErrorPersonSeat("This filed is required"); setErrorPersonSeat(true);}
+   if(record.person_seat  === ""){ check = true; setErrorPersonSeat("This filed is required"); setErrorPersonSeat(true);}
     
    if(record.luggage <= 0 || record.luggage >= 10 ){ check = true; setErrorPersonSeatText("value shoud be greater than 1 and less than 10"); setErrorPersonSeat(true);}
  
-   if(record.model_image.trim() == ""){ check = true; setErrorImage(true); alert('Model image is required'); }
+   if(record.model_image.trim() === ""){ check = true; setErrorImage(true); alert('Model image is required'); }
  
    return check;
  }
@@ -121,19 +119,19 @@ export default function VehicleModel() {
 
   let check = false;
 
-   if(record.brand == ""){ check = true; setErrorBrand(true); }
+   if(record.brand === ""){ check = true; setErrorBrand(true); }
    
-   if(record.category == ""){ check = true; setErrorCategory(true); }
+   if(record.category === ""){ check = true; setErrorCategory(true); }
    
-   if(record.year == ""){ check = true; setErrorYear(true); }
+   if(record.year === ""){ check = true; setErrorYear(true); }
    
-   if(record.model.trim() == ""){ check = true; setErrorModel(true); }
+   if(record.model.trim() === ""){ check = true; setErrorModel(true); }
     
-   if(record.luggage == ""){check = true; setErrorLuggageText("This filed is required");setErrorLuggage(true);}
+   if(record.luggage === ""){check = true; setErrorLuggageText("This filed is required");setErrorLuggage(true);}
 
    if(record.luggage <= 0 || record.luggage >= 10 ){check = true; setErrorLuggageText("value shoud be greater than 1 and less than 10"); setErrorLuggage(true);}
 
-   if(record.person_seat  == ""){ check = true; setErrorPersonSeat("This filed is required"); setErrorPersonSeat(true);}
+   if(record.person_seat  === ""){ check = true; setErrorPersonSeat("This filed is required"); setErrorPersonSeat(true);}
     
    if(record.luggaperson_seatge <= 0 || record.person_seat >= 10 ){ check = true; setErrorPersonSeatText("value shoud be greater than 1 and less than 10"); setErrorPersonSeat(true);}
  
@@ -188,7 +186,7 @@ const getCategoryList = () =>{
 
   const addRecord = () =>{
     
-    if(addFiledValidate() == false ){
+    if(addFiledValidate() === false ){
 
 
       service.postRecord(url,record)
@@ -214,7 +212,7 @@ const getCategoryList = () =>{
 
   const editRecord = () =>{
     
-    if(editFiledValidate() == false){
+    if(editFiledValidate() === false){
       
         let temp = {};
         temp['id'] = record.id;
@@ -287,14 +285,6 @@ const getCategoryList = () =>{
        }
       
     },
-    // {
-    //   label: "Image",
-    //   name: "image",
-    //   options: {
-    //     filter: true,
-    //     sort:true,
-    //   }
-    // },
     {
       label: "Category",
       name: "categories",
