@@ -21,19 +21,19 @@ import Person  from "@material-ui/icons/Person";
 // import DirectionsCar from "@material-ui/icons/DirectionsCar";
 import Accessible from "@material-ui/icons/Accessible";
 import  Business from "@material-ui/icons/Business";
-import LocalTaxi from "@material-ui/icons/LocalTaxi";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
-import BubbleChart from "@material-ui/icons/BubbleChart";
+// import LocalTaxi from "@material-ui/icons/LocalTaxi";
+// import LibraryBooks from "@material-ui/icons/LibraryBooks";
+// import BubbleChart from "@material-ui/icons/BubbleChart";
 import LocationOn from "@material-ui/icons/LocationOn";
-import Notifications from "@material-ui/icons/Notifications";
+// import Notifications from "@material-ui/icons/Notifications";
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
-import UserProfile from "views/UserProfile/UserProfile.js";
-import TableList from "views/TableList/TableList.js";
-import Typography from "views/Typography/Typography.js";
-import Icons from "views/Icons/Icons.js";
-import Maps from "views/Maps/Maps.js";
-import NotificationsPage from "views/Notifications/Notifications.js";
+// import UserProfile from "views/UserProfile/UserProfile.js";
+// import TableList from "views/TableList/TableList.js";
+// import Typography from "views/Typography/Typography.js";
+// import Icons from "views/Icons/Icons.js";
+// import Maps from "views/Maps/Maps.js";
+// import NotificationsPage from "views/Notifications/Notifications.js";
 
 // core components/views for RTL layout
 import Brand from "views/Brand.js";

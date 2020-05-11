@@ -148,42 +148,7 @@ export default function VehicleModel() {
 
   }
 
-  const getBrandList = () =>{
-   
-    service.getList('/brands')
-    .then(res => {
-      setBrandList(res.data);
-    })
-    .catch(err => {
-      console.log(err.message);
-    })
-}
-const getCategoryList = () =>{
-   
-  service.getList('/categories')
-  .then(res => {
-    setCategoryList(res.data);
-  })
-  .catch(err => {
-    console.log(err.message);
-  })
-}
-  const getRecordList = () =>{
-   
-        setLoad(true);
-        service.getList(url)
-        .then(res => {
-          setRecordList(res.data);
-          console.log(res.data);
-          setLoad(false);
-        })
-        .catch(err => {
-          console.log('error');
-          console.log(err.message);
-          setLoad(true);
-        })
-  }
-
+ 
   const addRecord = () =>{
     
     if(addFiledValidate() === false ){
@@ -267,8 +232,44 @@ const getCategoryList = () =>{
       }
 
   }
+  const getBrandList = () =>{
+   
+    service.getList('/brands')
+    .then(res => {
+      setBrandList(res.data);
+    })
+    .catch(err => {
+      console.log(err.message);
+    })
+}
+const getCategoryList = () =>{
+   
+  service.getList('/categories')
+  .then(res => {
+    setCategoryList(res.data);
+  })
+  .catch(err => {
+    console.log(err.message);
+  })
+}
+  const getRecordList = () =>{
+   
+        setLoad(true);
+        service.getList(url)
+        .then(res => {
+          setRecordList(res.data);
+          console.log(res.data);
+          setLoad(false);
+        })
+        .catch(err => {
+          console.log('error');
+          console.log(err.message);
+          setLoad(true);
+        })
+  }
 
   useEffect(() => {
+    
     getRecordList();
     getBrandList();
     getCategoryList();

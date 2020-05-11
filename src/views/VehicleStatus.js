@@ -62,20 +62,6 @@ export default function VehicleStatus() {
     const { name, value } = event.target
     setRecord({...record, [name]: value }) 
   }
-  const getRecordList = () =>{
-   
-        setLoad(true);
-        service.getList(url)
-        .then(res => {
-          setRecordList(res.data);
-          setLoad(false);
-        })
-        .catch(err => {
-          console.log('error');
-          console.log(err.message);
-          setLoad(true);
-        })
-  }
 
   const addRecord = () =>{
     if(record.status.trim() === ""){
@@ -137,8 +123,22 @@ export default function VehicleStatus() {
       }
 
   }
-
+  const getRecordList = () =>{
+   
+    setLoad(true);
+    service.getList(url)
+    .then(res => {
+      setRecordList(res.data);
+      setLoad(false);
+    })
+    .catch(err => {
+      console.log('error');
+      console.log(err.message);
+      setLoad(true);
+    })
+  }
   useEffect(() => {
+    
     getRecordList();
   },[]);
 

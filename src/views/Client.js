@@ -99,24 +99,6 @@ export default function Client() {
     setErrorEmail(false);
     setErrorAddress(false);
   }
-
-
-const getRecordList = () =>{
-   
-        setLoad(true);
-        service.getList(url)
-        .then(res => {
-          console.log(res.data);
-          setRecordList(res.data);
-          setLoad(false);
-        })
-        .catch(err => {
-          console.log('error');
-          console.log(err.message);
-          setLoad(true);
-        })
-  }
-
 const addRecord = () =>{
    
     if(addFiledValidate() === false){
@@ -193,8 +175,22 @@ const deleteRecord = () =>{
       }
 
   }
-
-  useEffect(() => {
+  const getRecordList = () =>{
+   
+    setLoad(true);
+    service.getList(url)
+    .then(res => {
+      console.log(res.data);
+      setRecordList(res.data);
+      setLoad(false);
+    })
+    .catch(err => {
+      console.log('error');
+      console.log(err.message);
+      setLoad(true);
+    })
+};
+  useEffect(() => { 
     getRecordList();
   },[]);
 
