@@ -194,27 +194,28 @@ const editRecord = () =>{
         // if(temp.email.trim() !== record.email.trim()){tempEidit['email'] = record.email;}
         // if(temp.address.trim() !== record.address.trim()){tempEidit['address'] = record.address;}
     
-        if(!isNaN(record.company)){ delete record.company;}
+        if(isNaN(record.company)){ delete record.company;}
         if(record.user_image === ""){ delete record.user_image;}
         if(record.license_image === ""){delete record.license_image;}
-        console.log('sent record');     
-        console.log(record);
-        // // console.log(editTemp);
+        if(record.user_image === ""){delete record.user_image;}
         
-        validateSetFalse();
-        seteditModal(false);       
-        service.patchRecord(url+'/'+record.id,record)
-        .then(res => {
-          console.log('recieve record');
-          console.log(res.data);
-          setRecordList(recordList.map(r => (r.id === record.id ? res.data : r)))
-          setRecord(initialRecord);
-          toast.success('Record Updated Successfully!');
-        })
-        .catch(err => {
-          console.log('error');
-          console.log(err.message);
-        })
+        // console.log('sent record');     
+        console.log(record);
+
+        // validateSetFalse();
+        // seteditModal(false);       
+        // service.patchRecord(url+'/'+record.id,record)
+        // .then(res => {
+        //   console.log('recieve record');
+        //   console.log(res.data);
+        //   setRecordList(recordList.map(r => (r.id === record.id ? res.data : r)))
+        //   setRecord(initialRecord);
+        //   toast.success('Record Updated Successfully!');
+        // })
+        // .catch(err => {
+        //   console.log('error');
+        //   console.log(err.message);
+        // })
         
       }
       
