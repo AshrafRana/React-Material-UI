@@ -37,6 +37,8 @@ import DashboardPage from "views/Dashboard/Dashboard.js";
 
 // core components/views for RTL layout
 import Brand from "views/Brand.js";
+import BabySeat from "views/BabySeat.js";
+
 import Client from "views/Client.js";
 import Company from "views/Company.js";
 import Driver from "views/Driver.js";
@@ -48,6 +50,86 @@ import VehicleFare from "views/VehicleFare.js";
 
 const dashboardRoutes = [
   
+  {
+    path: "/brand",
+    name: "Vehicle Brand",
+    rtlName: "قائمة الجدول",
+    icon: "content_paste",
+    component: Brand,
+    layout: "/admin"
+  },
+  {
+    path: "/categories",
+    name: "Vehicle Categories",
+    icon: "content_paste",
+    component: Category,
+    layout: "/admin"
+  },
+  {
+    path: "/status",
+    name: "Vehicle Status",
+    icon: "content_paste",
+    component: VehicleStatus,
+    layout: "/admin"
+  },
+  {
+    path: "/vehicle-model",
+    name: "Vehicle Model",
+    icon: "content_paste",
+    component: VehicleModel,
+    layout: "/admin"
+  },
+  {
+    path: "/orders",
+    name: "Order Types",
+    icon: "content_paste",
+    component: Order,
+    layout: "/admin"
+  },
+  {
+    path: "/baby-seat",
+    name: "Baby Seat",
+    icon: "content_paste",
+    component: BabySeat,
+    layout: "/admin"
+  },
+  {
+    path: "/baby-seat-fare",
+    name: "Baby Seat Fare",
+    icon: "content_paste",
+    component: Order,
+    layout: "/admin"
+  },
+  {
+    path: "/pickup-categroy",
+    name: "Pickup Categroy",
+    icon: "content_paste",
+    component: Order,
+    layout: "/admin"
+  },
+  {
+    path: "/pickup-place",
+    name: "Pickup Place",
+    icon: "content_paste",
+    component: Order,
+    layout: "/admin"
+  },
+  {
+    path: "/pickup-location",
+    name: "Pickup Location",
+    icon: "content_paste",
+    component: Order,
+    layout: "/admin"
+  },
+
+  {
+    path: "/vehicle-fare",
+    name: "Vehicle Fare",
+    icon: "content_paste",
+    component: VehicleFare,
+    layout: "/admin"
+  },
+
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -91,49 +173,7 @@ const dashboardRoutes = [
   //   component: Brand,
   //   layout: "/admin"
   // },
-  {
-    path: "/brand",
-    name: "Vehicle Brand",
-    rtlName: "قائمة الجدول",
-    icon: "content_paste",
-    component: Brand,
-    layout: "/admin"
-  },
-  {
-    path: "/orders",
-    name: "Order Types",
-    icon: "content_paste",
-    component: Order,
-    layout: "/admin"
-  },
-  {
-    path: "/categories",
-    name: "Vehicle Categories",
-    icon: "content_paste",
-    component: Category,
-    layout: "/admin"
-  },
-  {
-    path: "/status",
-    name: "Vehicle Status",
-    icon: "content_paste",
-    component: VehicleStatus,
-    layout: "/admin"
-  },
-  {
-    path: "/vehicle-model",
-    name: "Vehicle Model",
-    icon: "content_paste",
-    component: VehicleModel,
-    layout: "/admin"
-  },
-  {
-    path: "/vehicle-fare",
-    name: "Vehicle Fare",
-    icon: "content_paste",
-    component: VehicleFare,
-    layout: "/admin"
-  },
+  
   // {
   //   path: "/user",
   //   name: "User Profile",

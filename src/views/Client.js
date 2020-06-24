@@ -29,8 +29,7 @@ export default function Client() {
 
   let initialRecord = {id:'',first_name: '',last_name: '',phone_number:'',email:'',address:''};
   const [record, setRecord] = useState(initialRecord);
-  const [recordList, setRecordList] = useState([]);
-  
+  const [recordList, setRecordList] = useState([]);  
   const [load, setLoad] = useState(false);
   const [modal, setModal] = useState(false);
   const [editModal, seteditModal] = useState(false);
@@ -62,7 +61,6 @@ export default function Client() {
   }
   const handleDeleteClose = () => setDeleteModal(false);
   
-
   const handleInputChange = event => {
     const { name, value } = event.target
     setRecord({...record, [name]: value }) 

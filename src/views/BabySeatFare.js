@@ -21,7 +21,7 @@ import Service from "services/service";
 
 const useStyles = makeStyles(styles);
 
-export default function Order() {
+export default function BabySeatFare() {
 
   const url = '/orders'
   const service  = new Service();

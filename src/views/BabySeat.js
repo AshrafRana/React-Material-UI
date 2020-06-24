@@ -21,16 +21,17 @@ import Service from "services/service";
 
 const useStyles = makeStyles(styles);
 
-export default function Order() {
+export default function BabySeat() {
 
-  const url = '/orders'
+  const url = '/babyseats'
   const service  = new Service();
   const classes = useStyles();
-  let initialRecord = {id:'',name: ''};
+  let initialRecord = {id:'',weight: '',age: ''};
   const [record, setRecord] = useState(initialRecord);
   const [recordList, setRecordList] = useState([]);
   const [load, setLoad] = useState(false);
-  const [errorText ,setErrorText]= useState(false)
+  const [errorWeightText ,setErrorWeightText]= useState(false)
+  const [errorAgeText ,setErrorAgeText]= useState(false)
   const [modal, setModal] = useState(false);
   const [editModal, seteditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -44,13 +45,13 @@ export default function Order() {
   const handleCreateShow = () => setModal(true);
   const handleCreateClose = () =>{
     setModal(false);
-    setErrorText(false)
+    validateSetFalse();
   }
   const handleEditShow = () => seteditModal(true);
   const handleEditClose = () => 
   {
     seteditModal(false);
-    setErrorText(false)
+    validateSetFalse();
   }
 
   const handleDeleteShow = () => {
@@ -63,18 +64,41 @@ export default function Order() {
     setRecord({...record, [name]: value }) 
   }
 
-  const addRecord = () =>{
-    if(record.name.trim() === ""){
-      setErrorText(true)     
+  const validate = () =>{
+
+    let check = false;
+    
+    if(record.weight.trim() === ""){
+      setErrorWeightText(true);
+      check = true;     
     }
-    else{
+
+    if(record.age.trim() === ""){
+      setErrorAgeText(true);     
+      check = true; 
+    }
+
+    return check;
+    
+  }
+
+  const validateSetFalse = () =>{
+     setErrorWeightText(false);
+     setErrorAgeText(false);     
+  }
+  
+
+  const addRecord = () =>{
+    
+    if(validate()  === false){
+
         setModal(false);
         service.postRecord(url,record)
         .then(res => {
           setRecord(initialRecord);
           setRecordList([...recordList,res.data])
           toast.success('New Record Added Successfully!');
-          setErrorText(false)
+          validateSetFalse();
         })
         .catch(err => {
           console.log('error');
@@ -86,17 +110,14 @@ export default function Order() {
 
   const editRecord = () =>{
 
-    if(record.name.trim() === "" && record.id !== 0){
-      setErrorText(true)     
-    }
-    else{
+    if(validate() === false){      
         seteditModal(false);
         service.putRecord(url+'/'+record.id,record)
         .then(res => {
           setRecordList(recordList.map(r => (r.id === record.id ? record : r)))
           setRecord(initialRecord);
           toast.success('Record Updated Successfully!');
-          setErrorText(false)
+          validateSetFalse();
         })
         .catch(err => {
           console.log('error');
@@ -138,6 +159,7 @@ export default function Order() {
     })
 }
   useEffect(() => {
+
     getRecordList();
   },[]);
 
@@ -153,8 +175,16 @@ export default function Order() {
       
     },
     {
-      label: "Order Types",
-      name: "name",
+      label: "Baby Weight",
+      name: "weight",
+      options: {
+        filter: true,
+        sort:true,
+      }
+    },
+    {
+      label: "Age Limit",
+      name: "age",
       options: {
         filter: true,
         sort:true,
@@ -209,9 +239,11 @@ export default function Order() {
 // selected row data assign to textbox
 const onRowClick = (rowData) => {
 
-  let temp = {id:'',name: ''}
+  let temp = {id:'',weight: '',age: ''}
   temp.id = rowData[0];
-  temp.name = rowData[1];
+  temp.weight = rowData[1];
+  temp.age = rowData[2];
+  
   setRecord(temp);
 }
 const options = {
@@ -222,14 +254,14 @@ return (
   <GridContainer>
       <GridItem  xs={4} sm={4} md={2}>
       <Button color="info"  onClick={() => handleCreateShow()}>
-        <span><Add className={classes.icon} /></span>Order Type
+        <span><Add className={classes.icon} /></span>Add Baby Seat 
       </Button>
       </GridItem>
       <GridItem  xs={12} sm={12} md={12}>         
           {load?
             <div className={classes.root}><CircularProgress /> Loading ....</div>          
           : <MUIDataTable 
-            title={"Order Type List"} 
+            title={"Baby Seat List"} 
             data={recordList} 
             columns={columns} 
             options={options} 
@@ -239,52 +271,83 @@ return (
       <Modal 
           show={modal} 
           closeModal={handleCreateClose}
-          title = "Add Order Type"
+          title = "Add Baby Seat"
           btnTitle = "Save"
           action = {addRecord}
           content = {
+            <>
             <TextField
-               error = {errorText ?  true :false}
-               helperText= {errorText ? "this filed required"  :null}
-                id="name"
-                label="Order Type"
-                name = "name"
-                value = {record.name}
+               error = {errorWeightText ?  true :false}
+               helperText= {errorWeightText ? "this filed required"  :null}
+                id="weight"
+                label="Baby Weight"
+                name = "weight"
+                value = {record.weight}
                 onChange = {handleInputChange}
                 type="text"
                 fullWidth={true}
               />
+              <TextField
+              error = {errorAgeText ?  true :false}
+              helperText= {errorAgeText ? "this filed required"  :null}
+               id="age"
+               label="Age Limit"
+               name = "age"
+               value = {record.age}
+               onChange = {handleInputChange}
+               type="text"
+               fullWidth={true}
+             />
+             </>
           }
        />
-       {/* Edit Brand Modal */}
+       {/* Edit Modal */}
        <Modal 
           show={editModal} 
           closeModal={handleEditClose}
-          title = "Edit Order Type"
+          title = "Edit Vehicle Baby Seat"
           btnTitle = "Update"
           action = {editRecord}
           content = {
+            <>
             <TextField
-            error = {errorText ?  true :false}
-            helperText= {errorText ? "this filed required"  :null}
-             id="name"
-             label="Order Type"
-             name = "name"
-             value = {record.name}
-             onChange = {handleInputChange}
-             type="text"
-             fullWidth={true}
-           />
+               error = {errorWeightText ?  true :false}
+               helperText= {errorWeightText ? "this filed required"  :null}
+                id="weight"
+                label="Baby Weight"
+                name = "weight"
+                value = {record.weight}
+                onChange = {handleInputChange}
+                type="text"
+                fullWidth={true}
+              />
+              <TextField
+              error = {errorAgeText ?  true :false}
+              helperText= {errorAgeText ? "this filed required"  :null}
+               id="age"
+               label="Age Limit"
+               name = "age"
+               value = {record.age}
+               onChange = {handleInputChange}
+               type="text"
+               fullWidth={true}
+             />
+             </>
           }
        />
-        {/* Delete Brand Modal */}
+        {/* Delete Baby Modal */}
         <Modal 
           show={deleteModal} 
           closeModal={handleDeleteClose}
-          title = "Are you sure you want to delete Vehicle Order Type?"
+          title = "Are you sure you want to delete Vehicle Baby Seat?"
           btnTitle = "Delete"
           action = {deleteRecord}
-          content ={<p> Vehicle Order Type :  {record.name} </p>}
+          content ={
+          <>
+          <p> Baby Weight    :  {record.weight} </p>
+          <p> Baby Age Limit :  {record.age} </p>
+          </>
+        }
        />
   </GridContainer>
   );
